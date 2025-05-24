@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Книжкова бібліотека</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Книжкова бібліотека</h1>
+
+    <div class="mode-switch">
+        <a href="{{ url_for('index', mode='sql') }}">SQL Mode</a> |
+        <a href="{{ url_for('index', mode='imperative') }}">Imperative Mode</a>
+        <a href="{{ url_for('benchmark') }}">Бенчмарк</a>
+    </div>
+
+    <form method="get" action="{{ url_for('index') }}">
+        <input type="hidden" name="mode" value="{{ mode }}">
+        <input type="text" name="author" placeholder="Автор" value="{{ author }}">
+        <input type="text" name="genre" placeholder="Жанр" value="{{ genre }}">
+        <input type="text" name="year" placeholder="Рік" value="{{ year }}">
+        <select name="sort">
+            <option value="">-- Сортування --</option>
+            <option value="title" {% if sort == 'title' %}selected{% endif %}>Назва</option>
+            <option value="author" {% if sort == 'author' %}selected{% endif %}>Автор</option>
+            <option value="year" {% if sort == 'year' %}selected{% endif %}>Рік</option>
+        </select>
+        <button type="submit">Пошук</button>
+    </form>
+
+    <p>
+        <a href="{{ url_for('add_book', mode=mode) }}">Додати книгу</a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('statistics', mode=mode) }}">
+            <button>Переглянути статистику</button>
+        </a>
+    </p>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Автор</th>
+            <th>Жанр</th>
+            <th>Рік</th>
+            <th>Дії</th>
+        </tr>
+        {% for book in books %}
+        <tr>
+            <td>{{ book[0] }}</td>
+            <td>{{ book[1] }}</td>
+            <td>{{ book[2] }}</td>
+            <td>{{ book[3] }}</td>
+            <td>{{ book[4] }}</td>
+            <td>
+                <a href="{{ url_for('edit_book', book_id=book[0], mode=mode) }}">Редагувати</a>
+                <a href="{{ url_for('delete_book', book_id=book[0], mode=mode) }}">Видалити</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+  {% if page > 1 %}
+    <a href="{{ url_for('index', mode=mode, page=page-1, author=author, genre=genre, year=year, sort=sort) }}">← Попередня</a>
+  {% endif %}
+
+  <span>Сторінка {{ page }} з {{ total_pages }}</span>
+
+  {% if page < total_pages %}
+    <a href="{{ url_for('index', mode=mode, page=page+1, author=author, genre=genre, year=year, sort=sort) }}">Наступна →</a>
+  {% endif %}
+</div>
+
+</body>
+</html>

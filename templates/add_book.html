@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати книгу</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .form-container { max-width: 500px; margin: 0 auto; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; }
+        a { margin-top: 20px; display: inline-block; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Додати нову книгу</h1>
+
+    <div class="form-container">
+        <form method="POST">
+            <label for="title">Назва книги:</label>
+            <input type="text" name="title" required>
+
+            <label for="author">Автор:</label>
+            <input type="text" name="author" required>
+
+            <label for="genre">Жанр:</label>
+            <input type="text" name="genre">
+
+            <label for="year">Рік видання:</label>
+            <input type="number" name="year">
+
+            <button type="submit">Додати книгу</button>
+        </form>
+
+        <a href="{{ url_for('index') }}">Назад до списку книг</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Статистика за {{ aggregation }}</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>{{ aggregation.capitalize() }}</th>
+                <th>Кількість книг</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in stats %}
+            <tr>
+                <td>{{ item[0] if aggregation == 'author' else item }}</td>
+                <td>{{ item[1] if aggregation == 'author' else stats[item] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+    {% if page > 1 %}
+        <a href="?mode={{ mode }}&aggregation={{ aggregation }}&page={{ page - 1 }}">Попередня</a>
+    {% endif %}
+    <span>Сторінка {{ page }} з {{ total_pages }}</span>
+    {% if page < total_pages %}
+        <a href="?mode={{ mode }}&aggregation={{ aggregation }}&page={{ page + 1 }}">Наступна</a>
+    {% endif %}
+</div>
+
+
+    <a href="{{ url_for('index') }}">Назад до списку книг</a>
+</body>
+</html>
